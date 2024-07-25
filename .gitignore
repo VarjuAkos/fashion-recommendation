@@ -163,3 +163,5 @@ cython_debug/
 
 
 recommendeder.pkl
+images/
+fashion_knn_model.pkl

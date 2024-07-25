@@ -12,7 +12,7 @@ def preprocess_image(image):
     image = np.expand_dims(image, axis=0)
     return image
 
-def detect_objects(image):
+def detect_objects_with_boxes(image):
     preprocessed_image = preprocess_image(image)
     predictions = model.predict(preprocessed_image)
     decoded_predictions = tf.keras.applications.mobilenet_v2.decode_predictions(predictions)
@@ -20,20 +20,21 @@ def detect_objects(image):
     # Filter for clothing items
     clothing_items = [
         'shirt', 'jersey', 'tee_shirt', 'jean', 'trouser', 'dress', 
-        'skirt', 'suit', 'jacket', 'coat', 'sweater', 'shoe', 'sneaker', 'maillot',
-    ]
-
-    print(decoded_predictions)
-    
-    detected_items = [
-        item[1] for item in decoded_predictions[0] 
-        if any(clothing in item[1] for clothing in clothing_items)
+        'skirt', 'suit', 'jacket', 'coat', 'sweater', 'shoe', 'sneaker'
     ]
     
-    return list(set(detected_items))  # Remove duplicates
+    detected_items = []
+    for item in decoded_predictions[0]:
+        if any(clothing in item[1] for clothing in clothing_items):
+            # For simplicity, we're using the whole image as the bounding box
+            # In a real scenario, you'd use an object detection model to get accurate boxes
+            box = (0, 0, image.width, image.height)
+            detected_items.append((item[1], box))
+    
+    return detected_items
 
 # Test the function
 if __name__ == "__main__":
-    test_image = Image.open('./set.jpg')
-    detected = detect_objects(test_image)
+    test_image = Image.open("path_to_test_image.jpg")
+    detected = detect_objects_with_boxes(test_image)
     print("Detected items:", detected)
