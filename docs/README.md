@@ -27,7 +27,7 @@ The project consists of several key components:
 
 The project is structured into several Python scripts:
 
-- `app.py`: Main application script, handles the Streamlit UI and orchestrates the entire process.
+- `main.py`: Main application script, handles the Streamlit UI and orchestrates the entire process.
 - `object_detection.py`: Contains the MobileNetV2-based object detection functionality.
 - `feature_extraction.py`: Implements the ResNet50-based feature extraction.
 - `preprocess_and_train.py`: Preprocesses the dataset and trains the KNN model.
@@ -89,7 +89,7 @@ To deploy the Fashion Recommendation System:
 
 5. Run the Streamlit app:
    ```
-   streamlit run app.py
+   streamlit run run.py
    ```
 
 6. Open a web browser and navigate to the URL provided by Streamlit (typically `http://localhost:8501`).
