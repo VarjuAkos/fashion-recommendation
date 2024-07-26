@@ -7,9 +7,14 @@ from tensorflow.keras.models import Model
 from sklearn.neighbors import NearestNeighbors
 import pickle
 
+
+DATA_DIR = os.path.join('data', 'images')
+MODEL_OUTPUT_DIR = os.path.join('data', 'models')
+MODEL_OUTPUT_PATH = os.path.join(MODEL_OUTPUT_DIR, 'fashion_knn_model.pkl')
+
 # Feature Extractor
 def create_feature_extractor():
-    base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(80, 60, 3))
+    base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(80, 60, 3)) # Change input shape (224, 224, 3)
     x = base_model.output
     x = GlobalMaxPooling2D()(x)
     return Model(inputs=base_model.input, outputs=x)
@@ -17,7 +22,7 @@ def create_feature_extractor():
 # Image Preprocessing
 def preprocess_image(img_path):
     img = Image.open(img_path).convert('RGB')
-    img = img.resize((60, 80))
+    img = img.resize((60, 80)) # Change image size (224, 224)
     img_array = np.array(img)
     img_array = np.expand_dims(img_array, axis=0)
     return preprocess_input(img_array)
@@ -58,6 +63,4 @@ def preprocess_and_train(dataset_path, output_path):
     print(f"Preprocessing complete. Model and data saved to {output_path}")
 
 if __name__ == "__main__":
-    dataset_path = "./images"
-    output_path = "fashion_knn_model.pkl"
-    preprocess_and_train(dataset_path, output_path)
+    preprocess_and_train(DATA_DIR, MODEL_OUTPUT_PATH)
