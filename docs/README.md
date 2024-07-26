@@ -12,6 +12,8 @@ Key Features:
 - K-Nearest Neighbors algorithm for finding similar fashion items
 - User-friendly interface built with Streamlit
 
+![Demo](../demo.gif)
+
 ## 2. Project High-Level Design
 
 The project consists of several key components:
