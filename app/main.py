@@ -9,6 +9,14 @@ from streamlit_cropper import st_cropper
 MODEL_PATH = os.path.join('data', 'models', 'fashion_knn_model.pkl')
 DATA_DIR = os.path.join('data', 'images')
 
+def image_to_base64(image):
+    import base64
+    from io import BytesIO
+
+    buffered = BytesIO()
+    image.save(buffered, format="PNG")
+    return base64.b64encode(buffered.getvalue()).decode()
+
 # Load the pre-trained model and data
 @st.cache_resource
 def load_model_and_data():
@@ -27,6 +35,7 @@ def get_feature_extractor():
     return FeatureExtractor()
 
 def main():
+
     st.title("BePacek👗👠\n - The one and only Fashion Recommendation System👒👜")
 
     # Load model and data
@@ -48,7 +57,7 @@ def main():
     if uploaded_file is not None:
         # Display uploaded image
         image = Image.open(uploaded_file)
-        st.image(image, caption='Uploaded Image', use_column_width=True)
+        #st.image(image, caption='Uploaded Image', use_column_width=True)
 
         # Perform object detection
         with st.spinner('Detecting items in the image...'):
@@ -61,14 +70,11 @@ def main():
         else:
             st.warning("No items detected in the image.")
 
-
         # Image cropping
-        st.write("Select area of interest:")
-        aspect_ratio = (60, 80)
-        cropped_img = st_cropper(image, aspect_ratio=aspect_ratio, return_type="image")
-
-        # Display cropped image
-        st.image(cropped_img, caption='Selected Area', use_column_width=True)
+        st.write("Uploaded Image | Select area of interest:")
+        aspect_ratio = (3, 4)
+        
+        cropped_img = st_cropper(image, aspect_ratio=aspect_ratio, box_color = 'red', return_type="image")
 
         if st.button("Get Recommendations"):
             # Extract features
