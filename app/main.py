@@ -1,12 +1,10 @@
 import streamlit as st
-import numpy as np
 import pickle
 import os
 from PIL import Image
 from app.object_detection import detect_objects
 from app.feature_extraction import FeatureExtractor
 from streamlit_cropper import st_cropper
-import tensorflow as tf
 
 MODEL_PATH = os.path.join('data', 'models', 'fashion_knn_model.pkl')
 DATA_DIR = os.path.join('data', 'images')
@@ -17,16 +15,12 @@ def load_model_and_data():
     with open(MODEL_PATH, "rb") as f:
         knn, feature_array, image_paths = pickle.load(f)
     
-    # Correct the image paths
-    corrected_image_paths = []
-    for path in image_paths:
-        # Get just the filename from the old path
-        filename = os.path.basename(path)
-        # Create the new path using the current directory structure
-        new_path = os.path.join(DATA_DIR, filename)
-        corrected_image_paths.append(new_path)
+    image_paths = []
+    for path in os.listdir(DATA_DIR):
+        if path.lower().endswith(('.png', '.jpg', '.jpeg')):
+            image_paths.append(os.path.join(DATA_DIR, path))
     
-    return knn, feature_array, corrected_image_paths
+    return knn, feature_array, image_paths
 
 @st.cache_resource
 def get_feature_extractor():

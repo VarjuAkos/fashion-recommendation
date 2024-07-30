@@ -24,7 +24,7 @@ class FeatureExtractor:
         preprocessed_img = preprocess_input(expanded_img_array)
         features = self.model.predict(preprocessed_img)
         flattened_features = features.flatten()
-        normalized_features = flattened_features / np.linalg.norm(flattened_features)
+        normalized_features = flattened_features #/ np.linalg.norm(flattened_features) # Normalize the features?
         return normalized_features
 
 # Test the feature extractor

@@ -22,6 +22,6 @@ def detect_objects(image):
 
 # Test the function
 if __name__ == "__main__":
-    test_image = Image.open("path_to_test_image.jpg")
+    test_image = Image.open("data/set.jpg")
     detected = detect_objects(test_image)
     print("Detected items:", detected)
