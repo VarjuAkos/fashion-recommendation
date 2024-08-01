@@ -14,7 +14,7 @@ MODEL_OUTPUT_PATH = os.path.join(MODEL_OUTPUT_DIR, 'fashion_knn_model.pkl')
 
 # Feature Extractor
 def create_feature_extractor():
-    base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(60, 80, 3)) # Change input shape (224, 224, 3)
+    base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(80, 60, 3)) # Change input shape (224, 224, 3)
     x = base_model.output
     x = GlobalMaxPooling2D()(x)
     return Model(inputs=base_model.input, outputs=x)
