@@ -17,6 +17,7 @@ The Fashion Recommendation System consists of the following main components:
 The user interface is built using Streamlit and serves as the main entry point for the application.
 
 Key Functions:
+- `preprocess_image()` : Processes the uploaded image, handling small images. Ensure the image has 3 color channels.
 - `load_model_and_data()`: Loads the pre-trained KNN model and associated data.
 - `get_feature_extractor()`: Creates and caches the FeatureExtractor instance.
 - `main()`: The main function that sets up the Streamlit interface and orchestrates the workflow.
@@ -128,18 +129,12 @@ Workflow:
 - Potential for batch processing in feature extraction during dataset preprocessing
 - Consideration of dataset size and its impact on KNN performance
 
-## 7. Security Considerations
 
-- Ensure proper handling and storage of user-uploaded images
-- Implement rate limiting to prevent abuse of the recommendation system
-- Consider adding user authentication for personalized recommendations in future versions
 
-## 8. Scalability
+## 7. Scalability
 
 - Current design suitable for moderate-sized datasets
-- For larger datasets, consider:
-  - Implementing approximate nearest neighbor algorithms (e.g., Annoy, FAISS)
+- For larger datasets, we considered using:
+  - Other nearest neighbor algorithms (e.g., Annoy, FAISS)
   - Distributed processing for dataset preprocessing and feature extraction
   - Caching frequently requested recommendations
-
-This low-level design provides a comprehensive overview of the system's architecture, components, and their interactions. It serves as a guide for understanding the current implementation and as a foundation for future improvements and scaling considerations.
