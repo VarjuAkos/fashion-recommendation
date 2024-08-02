@@ -37,7 +37,7 @@ To deploy the Fashion Recommendation System, follow these steps:
    ```
 
 4. Prepare the dataset:
-   - Download the dataset and the model from [[dataset and model link](https://www.dropbox.com/scl/fo/loo7a6c58eh9vdnqm4nr3/AEkORjjAMvcQKU5z2QDY_mg?rlkey=n5w4bxgae4cmgywnrebr6addf&st=zaqcaav8&dl=0)].
+   - Download the dataset and the model from [[dataset and model link](https://www.dropbox.com/scl/fo/loo7a6c58eh9vdnqm4nr3/AEkORjjAMvcQKU5z2QDY_mg?rlkey=n5w4bxgae4cmgywnrebr6addf&st=zaqcaav8&dl=0)]. Dont forget to unzip the images.
    - Create a folder structure: `data/images` and `data/models`.
    - Place the downloaded images into the `data/images` folder.
 
@@ -73,7 +73,7 @@ Note: Ensure you have a suitable dataset of fashion images for the system to use
 
 For a complete list of dependencies, refer to the `requirements.txt` file.
 
-## 2. Explainable AI (How the Model Works)
+## Explainable AI (How the Model Works)
 
 The Fashion Recommendation System works through several steps:
 
@@ -93,12 +93,3 @@ This approach allows the system to make recommendations based on visual similari
 - Expand the dataset to cover a wider range of fashion items and styles.
 - Add user accounts and personalization based on user preferences and history.
 - Implement a feedback system to continuously improve recommendations.
-
-
-
-
-
-
-
-
-
