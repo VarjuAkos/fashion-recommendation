@@ -167,3 +167,5 @@ recommendeder.pkl
 data/images/
 data/models/fashion_knn_model.pkl
 data/models/
+temp/
+fasionrecvenv/
