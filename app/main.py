@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import os
+import numpy as np
 from PIL import Image
 from app.object_detection import detect_objects
 from app.feature_extraction import FeatureExtractor
@@ -8,15 +9,35 @@ from streamlit_cropper import st_cropper
 
 MODEL_PATH = os.path.join('data', 'models', 'fashion_knn_model.pkl')
 DATA_DIR = os.path.join('data', 'images')
+MIN_DISPLAY_WIDTH = 600
+MIN_DISPLAY_HEIGHT = 800
 
-def image_to_base64(image):
-    import base64
-    from io import BytesIO
+def preprocess_image(upload):
+    try:
+        image = Image.open(upload)
+        if image.mode != 'RGB':
+            image = image.convert('RGB')
 
-    buffered = BytesIO()
-    image.save(buffered, format="PNG")
-    return base64.b64encode(buffered.getvalue()).decode()
-
+        # Resize image if it's too small - UI cant handle small images well
+        if image.width < MIN_DISPLAY_WIDTH or image.height < MIN_DISPLAY_HEIGHT:
+            aspect_ratio = image.width / image.height
+            if aspect_ratio > MIN_DISPLAY_WIDTH / MIN_DISPLAY_HEIGHT:
+                display_size = (MIN_DISPLAY_WIDTH, int(MIN_DISPLAY_WIDTH / aspect_ratio))
+            else:
+                display_size = (int(MIN_DISPLAY_HEIGHT * aspect_ratio), MIN_DISPLAY_HEIGHT)
+            image = image.resize(display_size, Image.LANCZOS)
+            
+        image_array = np.array(image)
+        # Ensure the image has 3 channels
+        if image_array.shape[-1] != 3:
+            raise ValueError("Image must have 3 color channels")
+        processed_image = Image.fromarray(image_array)
+        print("--Image processed--")
+        
+        return processed_image, None
+    except Exception as e:
+        return None, str(e)
+    
 # Load the pre-trained model and data
 @st.cache_resource
 def load_model_and_data():
@@ -56,7 +77,11 @@ def main():
 
     if uploaded_file is not None:
         # Display uploaded image
-        image = Image.open(uploaded_file)
+        print("--Image uploaded--")
+        image, error = preprocess_image(uploaded_file)
+        if error:
+            st.error(f"Error processing image: {error}")
+            st.stop()
         #st.image(image, caption='Uploaded Image', use_column_width=True)
 
         # Perform object detection
@@ -74,12 +99,14 @@ def main():
         st.write("Uploaded Image | Select area of interest:")
         aspect_ratio = (3, 4)
         
-        cropped_img = st_cropper(image, aspect_ratio=aspect_ratio, box_color = 'red', return_type="image")
+        cropped_img = st_cropper(image, aspect_ratio=aspect_ratio, box_color = 'red', return_type="image",stroke_width=2)
+        print("--Image cropped--")
 
         if st.button("Get Recommendations"):
             # Extract features
             with st.spinner('Extracting features...'):
                 features = feature_extractor.extract_features(cropped_img)
+                print("--Features extracted--")
 
             # Get recommendations
             with st.spinner('Finding similar items...'):
@@ -92,6 +119,6 @@ def main():
                 with cols[i % 5]:
                     rec_img = Image.open(image_paths[idx])
                     st.image(rec_img, caption=f"Recommendation {i+1}", use_column_width=True)
-
+            print("--Recommendations displayed--")
 if __name__ == "__main__":
     main()

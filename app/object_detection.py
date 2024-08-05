@@ -16,12 +16,6 @@ def detect_objects(image):
     preprocessed_image = preprocess_image(image)
     predictions = model.predict(preprocessed_image)
     decoded_predictions = tf.keras.applications.mobilenet_v2.decode_predictions(predictions)
-    
+    print("--Detecting objects--")
     # Return top 5 predictions
     return decoded_predictions[0][:5]
-
-# Test the function
-if __name__ == "__main__":
-    test_image = Image.open("data/set.jpg")
-    detected = detect_objects(test_image)
-    print("Detected items:", detected)

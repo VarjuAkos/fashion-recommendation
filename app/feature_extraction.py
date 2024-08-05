@@ -4,7 +4,7 @@ from tensorflow.keras.layers import GlobalMaxPooling2D
 import numpy as np
 
 # Enable eager execution
-tf.config.run_functions_eagerly(True)
+#tf.config.run_functions_eagerly(True)
 
 class FeatureExtractor:
     def __init__(self):
@@ -26,11 +26,3 @@ class FeatureExtractor:
         flattened_features = features.flatten()
         normalized_features = flattened_features #/ np.linalg.norm(flattened_features) # Normalize the features?
         return normalized_features
-
-# Test the feature extractor
-if __name__ == "__main__":
-    from PIL import Image
-    feature_extractor = FeatureExtractor()
-    test_image = Image.open("path_to_test_image.jpg")
-    features = feature_extractor.extract_features(test_image)
-    print("Feature vector shape:", features.shape)
