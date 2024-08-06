@@ -169,3 +169,4 @@ data/models/fashion_knn_model.pkl
 data/models/
 temp/
 fasionrecvenv/
+.vscode/
