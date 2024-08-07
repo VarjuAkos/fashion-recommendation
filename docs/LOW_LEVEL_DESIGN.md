@@ -4,15 +4,15 @@
 
 The Fashion Recommendation System consists of the following main components:
 
-1. User Interface (app.py)
+1. User Interface (main.py)
 2. Object Detection (object_detection.py)
 3. Feature Extraction (feature_extraction.py)
 4. Data Preprocessing and Model Training (preprocess_and_train.py)
-5. Recommendation Engine (integrated in app.py)
+5. Recommendation Engine (integrated in main.py)
 
 ## 2. Detailed Component Design
 
-### 2.1 User Interface (app.py)
+### 2.1 User Interface (main.py)
 
 The user interface is built using Streamlit and serves as the main entry point for the application.
 
@@ -78,7 +78,7 @@ Workflow:
 4. Train a KNN model on the feature array
 5. Save the trained model, feature array, and image paths to a file
 
-### 2.5 Recommendation Engine (integrated in app.py)
+### 2.5 Recommendation Engine (integrated in main.py)
 
 The recommendation engine uses the trained KNN model to find similar fashion items.
 
@@ -94,7 +94,7 @@ Workflow:
 
 ## 3. Data Flow
 
-1. User uploads an image → UI (app.py)
+1. User uploads an image → UI (main.py)
 2. Image → Object Detection (object_detection.py) → Detected Items → UI
 3. User selects area of interest → UI
 4. Cropped Image → Feature Extraction (feature_extraction.py) → Feature Vector → UI
