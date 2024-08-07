@@ -42,58 +42,51 @@ def preprocess_image(upload):
 @st.cache_resource
 def load_model_and_data():
     with open(MODEL_PATH, "rb") as f:
-        knn, feature_array, image_paths = pickle.load(f)
+        knn, _, image_paths = pickle.load(f)
     
     image_paths = []
     for path in os.listdir(DATA_DIR):
         if path.lower().endswith(('.png', '.jpg', '.jpeg')):
             image_paths.append(os.path.join(DATA_DIR, path))
     
-    return knn, feature_array, image_paths
+    return knn, image_paths
 
 @st.cache_resource
 def get_feature_extractor():
     return FeatureExtractor()
 
 def main():
+    st.set_page_config(
+        page_title="BePacek",
+        page_icon="🔥"
+    )
 
-    st.title("BePacek👗👠\n - The one and only Fashion Recommendation System👒👜")
+    st.markdown("<h1 style='text-align: center; color: white;'>💪 BePacek 👠</h1>", unsafe_allow_html=True)
+    st.markdown("<h4 style='text-align: center; color: white;'>✨ We recommend similar fashion items based on your clothes. ✨</h3>", unsafe_allow_html=True)
+    st.markdown("<h4 style='text-align: center; color: white;'>📸 Take an image to get started with AI magic 🧠</h3>", unsafe_allow_html=True)
 
-    # Load model and data
-    knn, feature_array, image_paths = load_model_and_data()
+    knn, image_paths = load_model_and_data()
     
-    # Get feature extractor
     feature_extractor = get_feature_extractor()
 
-    # Discpription of the app and how to use it
-    st.write("""
-    
-            ✨ This app uses a 🧠 machine learning model to recommend similar fashion items based on an image you provide. ✨ \n
-            📸 Upload an Image of a fashion item using the file uploader below, then click the 'Get Recommendations' button to see similar items. 👕\n
-            ⬇️ Upload Your Fashion Item Here ⬇️""")
+    uploaded_file = st.camera_input("Quickstart", label_visibility="hidden")
+    # uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"], accept_multiple_files=False, label_visibility="collapsed")
 
-    # File uploader
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-
-    if uploaded_file is not None:
-        # Display uploaded image
-        print("--Image uploaded--")
+    if uploaded_file:
+        print("--Cheese 😎--")
         image, error = preprocess_image(uploaded_file)
         if error:
             st.error(f"Error processing image: {error}")
             st.stop()
-        #st.image(image, caption='Uploaded Image', use_column_width=True)
 
-        # Perform object detection
-        with st.spinner('Detecting items in the image...'):
+        with st.spinner('Detecting clothes 👀'):
             detected_items = detect_objects(image)
 
-         # Create a combo box for detected items
         if detected_items:
             item_options = [f"{item[1]} ({item[2]:.2f}%)" for item in detected_items]
-            selected_item = st.selectbox("Detected item:", item_options)
+            selected_item = st.selectbox("Detected items:", item_options)
         else:
-            st.warning("No items detected in the image.")
+            st.warning("No clothes were detected on the image.")
 
         # Image cropping
         st.write("Uploaded Image | Select area of interest:")
